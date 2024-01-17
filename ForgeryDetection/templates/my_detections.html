@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Detections</title>
+    <!-- Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-size: cover;
+            background-color: #004855;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-top: 50px;
+            color: #fafafa;
+        }
+        h5 {
+            color: #fafafa;
+        }
+
+        .button {
+            display: inline-block;
+            font-size: 24px;
+            padding: 15px 30px;
+            margin: 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        #upload-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #monitoring-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .description {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+
+        .image-container {
+            margin-top: 30px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .delete-btn {
+            padding: 8px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #f44336;
+            border-radius: 8px;
+            color: rgb(0, 0, 0);
+        }
+        .table-container {
+            margin-top: 30px;
+        }
+
+        .table-container table {
+            width: 100%;
+            background-color: #004855;
+            color: #ffffff;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table-container th, .table-container td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        .table-container img {
+            width: 150px; 
+            height: 100px; 
+            object-fit: contain; 
+            background-color: #dddddd; 
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% if messages %}
+    <div style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; padding: 15px; margin-bottom: 20px;">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>My Detections History</h1>
+    <br>
+    <div class="container table-container">
+        {% if data %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Prediction</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data %}
+                <tr>
+                    <td><img src="{{ entry.detection_image.url }}" class="detection_image"></td>
+                    <td>{{ entry.prediction }}</td>
+                    <td>
+                        <a class="delete-btn" id="delete-btn" detection_id="{{ entry.id }}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No Detections yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS and Popper.js scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        var deleteButtons = document.getElementsByClassName('delete-btn');
+
+        for (var i = 0; i < deleteButtons.length; i++) {
+            deleteButtons[i].addEventListener('click', function() {
+                // Show confirmation dialog
+                var confirmation = confirm('Are you sure you want to Delete Entry?');
+
+                if (confirmation) {
+                    var detection_id = this.getAttribute('detection_id');
+                    window.location.href = '/delete?id=' + encodeURIComponent(detection_id);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

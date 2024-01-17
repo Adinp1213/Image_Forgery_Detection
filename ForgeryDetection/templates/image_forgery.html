@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}New Detection{% endblock %}
+{% block content %}
+    <style>
+        form {
+            background-color: #004855;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.493);
+            width: 50%;
+            border: 1px solid #ddd;
+            margin: auto; /* Center the form horizontally */
+            display: block; /* Ensure the form is treated as a block element */
+        }
+        h2 {
+            text-align: center;
+            color: #ffffff;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #f5f4f4;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <br>
+    <h2>Forgery Detection</h2>
+    <br>
+    <br>
+    <form method="post" action="/detection_result/" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- detection image -->
+        <label for="detection_image">Image:</label>
+        <input type="file" id="detection_image" name="detection_image" accept="image/*" required>
+        <!-- Submit Button -->
+        <button type="submit">Detect</button>
+    </form>
+
+
+<script>
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        // Show confirmation dialog
+        var confirmation = confirm('Are you sure you want to log out?');
+        // If user confirms, perform logout action
+        if (confirmation) {
+            window.location.href = '/logout_2';
+        }
+    });
+</script>
+{% endblock %}
